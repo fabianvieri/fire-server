@@ -12,8 +12,8 @@ count = 0
 def root(): 
     return '<h1>Hello from server</h1>'
 
-@app.route('/count')  
-def root():
+@app.route('/count', methods=["GET"])  
+def count():
     global count
     count = count + 1 
     return Response(response=count, status=200)
