@@ -74,7 +74,9 @@ def get_image():
         print("error selecting database")
     finally:
         conn.close()
-        return jsonify({'status':row[0][0], 'image':row[0][1]})
+        response = jsonify({'status':row[0][0], 'image':row[0][1]})
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
 
 if __name__ == '__main__': 
     app.run(debug=True, threaded=True) 
