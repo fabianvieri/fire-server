@@ -1,4 +1,4 @@
-from flask import Flask, request, Response 
+from flask import Flask, request, Response, jsonify 
 import cv2
 import numpy as np
 import jsonpickle
@@ -6,7 +6,7 @@ import os
 
 app = Flask(__name__)
 
-count = 0
+counter = 0
 
 @app.route('/')  
 def root(): 
@@ -14,19 +14,18 @@ def root():
 
 @app.route('/count', methods=["GET"])  
 def count():
-    global count
-    count = count + 1 
-    return Response(response=count, status=200)
+    global counter 
+    return jsonify(counter)
 
 @app.route('/image', methods=["POST"])  
 def image():
-    global count 
+    global counter 
     r = request
     nparr = np.fromstring(r.data, np.uint8)
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     response = {'message': 'image received. size={}x{}'.format(img.shape[1], img.shape[0])}
     response_pickled = jsonpickle.encode(response)
-    count = count + 1
+    counter = counter + 1
     return Response(response=response_pickled, status=200, mimetype="application/json")
   
 if __name__ == '__main__': 
