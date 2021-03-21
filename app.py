@@ -45,13 +45,13 @@ def get_image():
     try:
         conn = db_connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT status, image_str FROM image WHERE id = 1")
+        cursor.execute("SELECT status, image_str, created_date FROM image WHERE id = 1")
         row = cursor.fetchall()
     except:
         print("error selecting database")
     finally:
         conn.close()
-        response = jsonify({'status':row[0][0], 'image':row[0][1]})
+        response = jsonify({'status':row[0][0], 'image':row[0][1], 'date':row[0][2]})
         response.headers.add("Access-Control-Allow-Origin", "*")
         return response
 
