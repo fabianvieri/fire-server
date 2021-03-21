@@ -13,24 +13,6 @@ def db_connect():
         print("There was problem in database")
     return conn
 
-try:
-    conn = db_connect()
-    cursor = conn.cursor()
-    query = """CREATE TABLE image (
-        id integer NOT NULL,
-        created_date datetime NOT NULL,
-        image_str text,
-        status integer NOT NULL
-    )"""
-    cursor.execute(query)
-    conn.commit()
-    query = "INSERT INTO image VALUES (1, '2021-03-20 19:41:00', '', 0)"
-    cursor.execute(query)
-    conn.commit()
-except:
-    conn.rollback()
-    print("table image already exists")
-
 @app.route('/')  
 def root(): 
     return '<h1>SFH Server</h1>'
@@ -54,12 +36,7 @@ def post_image():
         return Response(response=json.dumps(resp), status=400, mimetype="application/json")
     finally:
         conn.close()
-    # convert back string
-    # bytes = image.encode()
-    # base = base64.b64decode(bytes)
-    # nparr = np.fromstring(base, np.uint8)
-    # img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    # cv2.imwrite("frame.jpg", img)
+        
     resp = {'message':'image received'}
     return Response(response=json.dumps(resp), status=200, mimetype="application/json")
 
