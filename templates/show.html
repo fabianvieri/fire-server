@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image</title>
+</head>
+
+<body>
+    <script>
+        fetch("https://flask-image-yolo.herokuapp.com/get/image")
+            .then(response => response.json())
+            .then(data => {
+                const figure = document.createElement("FIGURE");
+
+                const caption = document.createElement("FIGCAPTION");
+                const text = document.createTextNode(data.date);
+                caption.appendChild(text);
+
+                const img = document.createElement("IMG");
+                img.src = 'data:image/jpg;base64,' + data.image;
+
+                figure.appendChild(img);
+                figure.appendChild(caption);
+
+                document.body.appendChild(figure);
+            })
+    </script>
+</body>
+
+</html>

@@ -1,4 +1,4 @@
-from flask import Flask, request, Response, jsonify
+from flask import Flask, request, Response, jsonify, render_template
 from datetime import datetime
 import sqlite3
 import json
@@ -15,7 +15,7 @@ def db_connect():
 
 @app.route('/')  
 def root(): 
-    return '<h1>SFH Server</h1>'
+    return render_template('index.html')
       
 @app.route('/post/image', methods=["POST"])  
 def post_image():
@@ -54,6 +54,10 @@ def get_image():
         response = jsonify({'status':row[0][0], 'image':row[0][1], 'date':row[0][2]})
         response.headers.add("Access-Control-Allow-Origin", "*")
         return response
+
+@app.route('/show/image')  
+def show(): 
+    return render_template('show.html')
 
 if __name__ == '__main__': 
     app.run(debug=True, threaded=True) 
