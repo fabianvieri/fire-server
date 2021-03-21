@@ -19,11 +19,10 @@ def root():
       
 @app.route('/post/image', methods=["POST"])  
 def post_image():
+    data = json.loads(request.json)
+    image = data["image"]
+    status = data["status"]
     try:
-        data = json.loads(request.json)
-        image = data["image"]
-        status = data["status"]
-        
         conn = db_connect()
         cursor = conn.cursor()
         date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
