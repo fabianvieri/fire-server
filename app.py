@@ -147,23 +147,22 @@ def done_notification():
     notif_id = request.args.get('id')
     response = {}
     status_code = 200
-    if notif_id:
-        try:
-            conn = db_connect()
-            cursor = conn.cursor()
-            query_update = "UPDATE notification SET status = 'done' WHERE id = %s" % (notif_id)
-            cursor.execute(query_update)            
-            conn.commit()
-            response = {'message':'notification updated to done'}
-        except:
-            conn.rollback()
-            response = {'message':'error updating notification'}
-            status_code = 400
-        finally:
-            conn.close()           
-    else:
-        response = {'message':'invalid id'}      
+    try:
+        data = json.loads(json.dumps(request.json))
+        notif_id = data["notificationId"]
+
+        conn = db_connect()
+        cursor = conn.cursor()
+        query_update = "UPDATE notification SET status = 'done' WHERE id = %d" % (notif_id)
+        cursor.execute(query_update)            
+        conn.commit()
+        response = {'message':'notification updated to done'}
+    except:
+        conn.rollback()
+        response = {'message':'error updating notification'}
         status_code = 400
+    finally:
+        conn.close()           
         
     return jsonify(response), status_code
 
