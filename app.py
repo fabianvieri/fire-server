@@ -23,6 +23,7 @@ def post_image():
     response = {}
     status_code = 200
     try:
+        # for python request
         data = json.loads(request.json)
         image = data["image"]
         status = data["status"]
