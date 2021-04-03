@@ -1,5 +1,5 @@
 from os import stat
-from flask import Flask, request, jsonify, render_template, make_response, Response
+from flask import Flask, request, jsonify, render_template
 from datetime import datetime
 import sqlite3
 import json
@@ -23,7 +23,7 @@ def post_image():
     response = {}
     status_code = 200
     try:
-        data = json.loads(json.dumps(request.json))
+        data = json.loads(request.json)
         image = data["image"]
         status = data["status"]
         user = data["user"]
@@ -144,7 +144,6 @@ def get_notification():
 
 @app.route('/done/notification', methods=["POST"])  
 def done_notification():
-    notif_id = request.args.get('id')
     response = {}
     status_code = 200
     try:
