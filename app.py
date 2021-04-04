@@ -60,6 +60,7 @@ def get_image():
             row = cursor.fetchall()
             if len(row) == 0:
                 response = {'message':'image not found'}
+                status_code = 400
             else:
                 response = {'id':row[0][0], 'date':row[0][1], 'image':row[0][2], 'status':row[0][3]}
         except:
@@ -116,6 +117,7 @@ def get_notification():
             row = cursor.fetchall()
             if len(row) == 0:
                 response = {'message':'notification not found for this user'}
+                status_code = 400
             else:
                 notificationList = []
                 for record in row:
