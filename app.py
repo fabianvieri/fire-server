@@ -28,11 +28,12 @@ def post_image():
         image = data["image"]
         status = data["status"]
         user = data["user"]
+        camera = data["camera"]
 
         conn = db_connect()
         cursor = conn.cursor()
         date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        query_update = "UPDATE image SET date = '%s', base64_image = '%s', status = %d WHERE user_id = %d" % (date, image, status, user)
+        query_update = "UPDATE camera SET date = '%s', base64_image = '%s', status = %d WHERE user_id = %d AND id = %d" % (date, image, status, user, camera)
         cursor.execute(query_update)            
         conn.commit()
         
@@ -49,27 +50,28 @@ def post_image():
 @app.route('/get/image', methods=["GET"])  
 def get_image():
     user = request.args.get('id')
+    camera = request.args.get('camera')
     response = {}
     status_code = 200
-    if user:
+    if user and camera:
         try:
             conn = db_connect()
             cursor = conn.cursor()
-            query_select = "SELECT id, date, base64_image, status FROM image WHERE user_id = %s" % (user)
+            query_select = "SELECT date, base64_image, status FROM camera WHERE user_id = %s AND id = %s" % (user, camera)
             cursor.execute(query_select)
             row = cursor.fetchall()
             if len(row) == 0:
                 response = {'message':'image not found'}
                 status_code = 400
             else:
-                response = {'id':row[0][0], 'date':row[0][1], 'image':row[0][2], 'status':row[0][3]}
+                response = {'date':row[0][0], 'image':row[0][1], 'status':row[0][2]}
         except:
             response = {'message':'error getting image'}
             status_code = 400
         finally:
             conn.close()
     else:
-        response = {'message':'invalid id'}
+        response = {'message':'invalid parameter'}
         status_code = 400
 
     response = jsonify(response)
@@ -138,7 +140,7 @@ def get_notification():
         finally:
             conn.close()
     else:
-        response = {'message':'invalid user'}
+        response = {'message':'invalid parameter'}
         status_code = 400
 
     response = jsonify(response)

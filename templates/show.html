@@ -10,7 +10,7 @@
 
 <body>
     <script>
-        fetch("https://flask-image-yolo.herokuapp.com/get/image?id=1")
+        fetch("https://flask-image-yolo.herokuapp.com/get/image?id=1&camera=1")
             .then(response => response.json())
             .then(data => {
                 const figure = document.createElement("FIGURE");

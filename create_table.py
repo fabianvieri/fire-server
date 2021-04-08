@@ -24,12 +24,13 @@ query = """CREATE TABLE notification (
 """
 cursor.execute(query)
 
-query = """CREATE TABLE image (
-    id integer PRIMARY KEY,
+query = """CREATE TABLE camera (
+    id integer,
     date text,
     base64_image text,
     user_id integer,
     status integer,
+    PRIMARY KEY (id, user_id),
     FOREIGN KEY (user_id) REFERENCES user (id)
 )
 """
