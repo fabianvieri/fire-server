@@ -29,10 +29,10 @@ def post_image():
         status = data["status"]
         user = data["user"]
         camera = data["camera"]
+        date = data["date"]
 
         conn = db_connect()
         cursor = conn.cursor()
-        date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         query_update = "UPDATE camera SET date = '%s', base64_image = '%s', status = %d WHERE user_id = %d AND id = %d" % (date, image, status, user, camera)
         cursor.execute(query_update)            
         conn.commit()
@@ -87,10 +87,10 @@ def post_notification():
         image = data["image"]
         status = data["status"]
         user = data["user"]
+        date = data["date"]
 
         conn = db_connect()
         cursor = conn.cursor()
-        date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         query_insert = "INSERT INTO notification (date, status, user_id, base64_image) VALUES ('%s', '%s', %d, '%s')" % (date, status, user, image)
         cursor.execute(query_insert)
         conn.commit()
