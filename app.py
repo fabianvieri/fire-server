@@ -170,6 +170,35 @@ def done_notification():
         
     return jsonify(response), status_code
 
+@app.route('/get/firefighter', methods=["GET"])
+def get_firefighter():
+    firefighter = request.args.get('id')
+    response = {}
+    status_code = 200
+    if firefighter:
+        try:
+            conn = db_connect()
+            cursor = conn.cursor()
+            query_select = "SELECT name, phone, address FROM firefighter WHERE id = %s" % (firefighter)
+            cursor.execute(query_select)
+            row = cursor.fetchall()
+            if len(row) == 0:
+                response = {'message':'fire fighter not found'}
+                status_code = 400
+            else:
+                response = {'name':row[0][0], 'phone':row[0][1], 'address':row[0][2]}
+        except:
+            response = {'message':'error getting fire fighter'}
+            status_code = 400
+        finally:
+            conn.close()
+    else:
+        response = {'message':'invalid parameter'}
+        status_code = 400
+    response = jsonify(response)
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response, status_code
+    
 @app.route('/show/image')  
 def show(): 
     return render_template('show.html')

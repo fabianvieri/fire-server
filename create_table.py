@@ -36,6 +36,15 @@ query = """CREATE TABLE camera (
 """
 cursor.execute(query)
 
+query = """CREATE TABLE firefighter (
+    id integer PRIMARY KEY,
+    name text,
+    address text,
+    phone text
+)
+"""
+cursor.execute(query)
+
 conn.commit()
 conn.close()
 print("Table Created Successfully")
