@@ -198,6 +198,32 @@ def get_firefighter():
     response = jsonify(response)
     response.headers.add("Access-Control-Allow-Origin", "*")
     return response, status_code
+
+@app.route('/delete/notification', methods=["GET"]) 
+def delete_notification():
+    user = request.args.get('id')
+    response = {}
+    status_code = 200
+    if user:
+        try:
+            conn = db_connect()
+            cursor = conn.cursor()
+            query_select = "DELETE FROM notification WHERE user_id = %s" % (user)
+            cursor.execute(query_select)
+            row = cursor.fetchall()
+            response = {'message':'notification for user_id = %s has been deleted' % (user)}
+        except:
+            response = {'message':'error delete notification'}
+            status_code = 400
+        finally:
+            conn.close()
+    else:
+        response = {'message':'invalid parameter'}
+        status_code = 400
+
+    response = jsonify(response)
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response, status_code
     
 @app.route('/show/image')  
 def show(): 
