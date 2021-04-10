@@ -210,7 +210,6 @@ def delete_notification():
             cursor = conn.cursor()
             query_select = "DELETE FROM notification WHERE user_id = %s" % (user)
             cursor.execute(query_select)
-            row = cursor.fetchall()
             response = {'message':'notification for user_id = %s has been deleted' % (user)}
         except:
             response = {'message':'error delete notification'}
